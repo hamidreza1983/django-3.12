@@ -1,11 +1,13 @@
 from django.shortcuts import render
-from .models import Skills
+from .models import Skills, Agent , Star, Testimonial
 
 
 def home(request):
-    skills = Skills.objects.filter(status=True)
+    agents = Agent.objects.filter(status=True).order_by('-created_at')[:3]
+    testinonials = Testimonial.objects.filter(status=True)
     context = {
-        "skills": skills
+        "agents": agents,
+        "testimonials": testinonials
     }
     return render(request, "root/index.html", context=context)
 def contact(request):
@@ -15,6 +17,10 @@ def about(request):
     return render(request, "root/about.html")
 
 def agent(request):
-    return render(request, "root/agents.html")
+    agents = Agent.objects.filter(status=True)
+    context = {
+        "agents": agents
+    }
+    return render(request, "root/agents.html", context=context)
 
 # Create your views here.
