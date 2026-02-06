@@ -38,7 +38,7 @@
               <div class="icon">
                 <i class="bi bi-activity"></i>
               </div>
-              <a href="{% url 'services:detail' %}?id={{ service.id }}" class="stretched-link">
+              <a href="{% url 'services:detail' id=service.id %}" class="stretched-link">
                 <h3>{{service.name}}</h3>
               </a>
               <p>{{service.short_content}}</p>

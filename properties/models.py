@@ -1,0 +1,24 @@
+from django.db import models
+from root.models import Agent
+
+# Create your models here.
+
+class PropertyType(models.Model):
+    title = models.CharField(max_length=100)
+    status = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.title
+
+class Property(models.Model):
+    image1 = models.ImageField(upload_to='property/', default='property/default.jpg')
+    image2 = models.ImageField(upload_to='property/', default='property/default.jpg')
+    image3 = models.ImageField(upload_to='property/', default='property/default.jpg')
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    agent = models.ForeignKey(Agent, on_delete=models.DO_NOTHING)
+    video = models.TextField(blank=True, null=True)
+    floor = models.ImageField(upload_to='property/', default='property/default.jpg')
+    map = models.TextField(blank=True, null=True)
+    location = models.CharField(max_length=200)
+    type = models.ForeignKey(PropertyType, on_delete=models.DO_NOTHING)
