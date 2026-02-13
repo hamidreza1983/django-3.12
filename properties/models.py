@@ -9,6 +9,12 @@ class PropertyType(models.Model):
 
     def __str__(self):
         return self.title
+    
+class Status(models.Model):
+    title = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.title
 
 class Property(models.Model):
     image1 = models.ImageField(upload_to='property/', default='property/default.jpg')
@@ -22,3 +28,18 @@ class Property(models.Model):
     map = models.TextField(blank=True, null=True)
     location = models.CharField(max_length=200)
     type = models.ForeignKey(PropertyType, on_delete=models.DO_NOTHING)
+    beds = models.IntegerField(default=0)
+    baths = models.IntegerField(default=0)
+    area = models.IntegerField(default=0)
+    garage = models.IntegerField(default=0)
+    price = models.IntegerField(default=0)
+    position = models.ForeignKey(Status, on_delete=models.DO_NOTHING)
+    status = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        ordering = ['-created_at']

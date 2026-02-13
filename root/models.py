@@ -50,4 +50,14 @@ class Testimonial(models.Model):
         return range(self.score.count)
 
 
+class ContactUs(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    subject = models.CharField(max_length=200)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
 # Create your models here.

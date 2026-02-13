@@ -6,4 +6,5 @@ app_name = "properties"
 
 urlpatterns = [
     path("", properties, name="properties"),
+    path("property-single/<int:id>", property_single, name="single"),
 ]
