@@ -3,6 +3,12 @@ from django.db import models
 # Create your models here.
 
 
+class Tags(models.Model):
+    title = models.CharField(max_length=100)
+
+    def __str__(self):
+        return str(self.title)
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
 
@@ -20,6 +26,7 @@ class Services(models.Model):
     photo = models.ImageField(upload_to='services/', default='services/default.png')
     category = models.ManyToManyField(Category)
     title = models.CharField(max_length=250)
+    tags = models.ManyToManyField(Tags)
     short_content = models.TextField()
     speacials = models.ManyToManyField(Specials)
     long_content = models.TextField()

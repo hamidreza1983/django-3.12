@@ -75,6 +75,9 @@
             <p>
               {{service.long_content}}
             </p>
+            {% for tag in service.tags.all %}
+              <a href={% url 'services:services_by_tag' tag=tag.title %} class="badge bg-secondary">{{tag.title}}</a>
+            {% endfor %}
           </div>
 
         </div>

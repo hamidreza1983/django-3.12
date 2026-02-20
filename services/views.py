@@ -4,14 +4,18 @@ from .models import Services
 # Create your views here.
 
 
-def services(request, category=None):
+def services(request, *args, **kwargs):
     #if request.GET.get("cat"):
     #    services = Services.objects.filter(category__name=request.GET.get("cat"), status=True)
     #else:
     #    services = Services.objects.filter(status=True)
     #===============================================================
-    if category:
-        services = Services.objects.filter(category__name=category, status=True)
+    if kwargs.get("category"):
+        services = Services.objects.filter(category__name=kwargs.get("category"), status=True)
+    if kwargs.get("tag"):
+        services = Services.objects.filter(tags__title=kwargs.get("tag"), status=True)
+    elif request.GET.get("search"):
+        services = Services.objects.filter(short_content__contains=request.GET.get("search"), status=True)
     else:
         services = Services.objects.filter(status=True)
     context = {

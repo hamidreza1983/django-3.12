@@ -77,7 +77,7 @@
                 </div>
 
                 <div class="col-md-6 ">
-                  <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
+                  <input type="text" name="email" placeholder="Your Email" required="">
                 </div>
 
                 <div class="col-md-12">
@@ -89,15 +89,18 @@
                 </div>
 
                 <div class="col-md-12 text-center">
-                  <div class="loading">Loading</div>
-                  <div class="error-message"></div>
-                  <div class="sent-message">Your message has been sent. Thank you!</div>
 
                   <button type="submit">Send Message</button>
                 </div>
+                
 
               </div>
             </form>
+            {% if messages %}
+              {% for message in messages %}
+                {{ message }}
+              {% endfor %}
+            {% endif %}
           </div><!-- End Contact Form -->
 
         </div>
