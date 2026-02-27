@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% block 'title' %}register{% endblock 'title' %}
+{% block 'content' %}
+
+  <main class="main">
+    <section id="contact" class="contact section">
+      <div class="container" data-aos="fade-up">
+        <div class="section-header">
+            <br><br><br><br><br><br><br><br>
+          <h2>Register</h2>
+        </div>
+        <div class="row gy-4">
+          <div class="col-lg-6">
+            <form method="post">
+              {% csrf_token %}
+              <div class="row gy-4">
+                <div class="col-md-12">
+                  <input type="text" name="username" class="form-control" placeholder="Your Username" required>
+                </div>
+                <div class="col-md-12 ">
+                  <input type="email" name="email" class="form-control" placeholder="Your Email" required>
+                </div>
+                <div class="col-md-12 ">
+                  <input type="password" name="password1" class="form-control" placeholder="Your Password" required>
+                </div>
+                <div class="col-md-12 ">
+                  <input type="password" name="password2" class="form-control" placeholder="Confirm Password" required>
+                </div>
+                <div class="col-md-12 text-center"><button type="submit">Register</button></div>
+                <p>Already have an account? <a href="{% url 'accounts:login' %}">Login here</a></p>
+                <br><br><br><br><br><br><br><br>
+              </div>
+
+            </form>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+          </div><!-- End Contact Form -->
+
+        </div>
+
+      </div>
+
+    </section><!-- End Contact Section -->
+
+  </main><!-- End #main -->
+
+{% endblock 'content' %}
