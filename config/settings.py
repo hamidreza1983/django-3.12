@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'services',
     'properties',
     'accounts',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -134,3 +135,7 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
+AUTH_USER_MODEL = "accounts.CustomUserModel"
