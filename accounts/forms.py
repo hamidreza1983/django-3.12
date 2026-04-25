@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomUserModel
+from .models import UserModel
 from django.contrib.auth.forms import UserCreationForm
 
 class LoginForm(forms.Form):
@@ -10,8 +10,8 @@ class RegisterForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
     class Meta:
-        model = CustomUserModel
-        fields = ("id_code", "phone", "username", "email", "password1", "password2")
+        model = UserModel
+        fields = ("email", "password1", "password2")
 
 
 class ChangePasswordForm(forms.Form):

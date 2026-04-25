@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import LoginForm, RegisterForm, ChangePasswordForm, ResetPasswordForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from .models import CustomUserModel
+from .models import UserModel
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import password_validation
@@ -17,16 +17,16 @@ def login_view(request):
     else:
         form = LoginForm(request.POST)
         if form.is_valid():
-            phone = form.cleaned_data.get("phone")
+            email = form.cleaned_data.get("email")
             password = form.cleaned_data.get("password")
             try:
-                user = CustomUserModel.objects.get(phone=phone)
+                user = UserModel.objects.get(email=email)
             except:
                 messages.error(request, "user not found")
                 return redirect("accounts:login")
 
-            username = user.username
-            user = authenticate(request, username=username, password=password)
+            email = user.email
+            user = authenticate(request, username=email, password=password)
             if user is not None:
                 login(request, user)
                 return redirect("root:home")
@@ -96,7 +96,7 @@ def reset_password(request):
         form = ResetPasswordForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data["email"]
-            user = User.objects.get(email=email)
+            user = UserModel.objects.get(email=email)
             token, create = Token.objects.get_or_create(user=user)
             send_mail(
                 "reset password",
