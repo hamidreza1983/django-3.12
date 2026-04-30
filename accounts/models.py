@@ -49,3 +49,16 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+#def validate_mobile(phone:str):
+#    if len(phone) != 11:
+#        raise ValueError ("phone must be 11 char")
+
+#import uuid#
+
+#class UserProfile(models.Model):
+#    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+#    phone = models.CharField(max_length=11, unique=True, default=uuid.UUID)
+#    id_code = models.CharField(max_length=10, unique=True, default=uuid.UUID)
+#    image = models.ImageField(upload_to="profile/", null=True, blank=True)

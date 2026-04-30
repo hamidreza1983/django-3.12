@@ -37,7 +37,7 @@ def login_view(request):
             messages.error(request, "Invalid form data")
             return redirect("accounts:login")
 
-    
+from .models import UserProfile   
 
 def register_view(request):
     if request.method == "GET":
@@ -46,6 +46,9 @@ def register_view(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
+            #user = form.save()
+            #profile = UserProfile.objects.create(user=user)
+            #profile.save()
             messages.success(request, "Registration successful. Please log in.")
             return redirect("accounts:login")
         else:
