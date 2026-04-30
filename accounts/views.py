@@ -37,7 +37,7 @@ def login_view(request):
             messages.error(request, "Invalid form data")
             return redirect("accounts:login")
 
-from .models import UserProfile   
+#from .models import UserProfile   
 
 def register_view(request):
     if request.method == "GET":
