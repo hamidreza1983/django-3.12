@@ -3,6 +3,7 @@ from .models import Skills, Agent , Star, Testimonial, ContactUs
 from services.models import Services
 from .forms import ContactUsForm
 from django.contrib import messages
+from django.views.generic import TemplateView, RedirectView
 
 
 def home(request):
@@ -63,8 +64,21 @@ def contact(request):
         #contact.save()
         #return render(request, "root/contact.html")
 
-def about(request):
-    return render(request, "root/about.html")
+#def about(request):
+#    return render(request, "root/about.html")
+
+class AboutView(TemplateView):
+    template_name = "root/about.html"
+
+#    def get_context_data(self, **kwargs):
+#        context = super().get_context_data(**kwargs)
+#        #skills = Skills.objects.filter(status=True)
+#        #stars = Star.objects.filter(status=True)
+#        context["test"] = 1000   
+#        return context#
+
+class Soft98(RedirectView):
+    url = "https://www.soft98.ir"
 
 def agent(request):
     agents = Agent.objects.filter(status=True)
