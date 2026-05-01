@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'root',
     'services',
     'properties',
-    'accounts',
+    'accounts.apps.AccountsConfig',
     'rest_framework.authtoken',
 ]
 
