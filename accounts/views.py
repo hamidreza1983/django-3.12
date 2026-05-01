@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import LoginForm, RegisterForm, ChangePasswordForm, ResetPasswordForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from .models import UserModel
+from .models import UserModel , UserProfile
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import password_validation
@@ -45,15 +45,15 @@ def register_view(request):
     else:
         form = RegisterForm(request.POST)
         if form.is_valid():
-            form.save()
-            #user = form.save()
+            #form.save()
+            user = form.save()            
             #profile = UserProfile.objects.create(user=user)
             #profile.save()
             messages.success(request, "Registration successful. Please log in.")
             return redirect("accounts:login")
         else:
             messages.error(request, "input data is not valid")
-            redirect (request.path_info)
+            return redirect (request.path_info)
 
 
 @login_required
