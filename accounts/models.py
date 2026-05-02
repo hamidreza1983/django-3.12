@@ -49,7 +49,8 @@ class CustomManager(BaseUserManager):
         user = self.model(id_code=id_code,email=email,mobile=mobile,**kwargs)
         user.set_password(password)
         user.save(using=self._db)
-        return self.create_user(id_code, email, mobile, password, **kwargs)
+        return user
+
 
 
 
