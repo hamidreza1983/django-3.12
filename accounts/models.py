@@ -35,32 +35,39 @@ def validate_id_code(value):
 
 class CustomManager(BaseUserManager):
 
-    def create_user(self, id_code, email, password=None, **kwargs):
+    def create_user(self, id_code, email, mobile, password=None,**kwargs):
         if not id_code:
             raise ValueError("id_code can not be empty.")
         if not email:
             raise ValueError("email can not be empty.")
+        if not mobile:
+            raise ValueError("Mobile number is required.")
 
         validate_id_code(id_code)
+        validate_mobile(mobile)
         email = self.normalize_email(email)
-        user = self.model(id_code=id_code,email=email,**kwargs)
+        user = self.model(id_code=id_code,email=email,mobile=mobile,**kwargs)
         user.set_password(password)
         user.save(using=self._db)
-        return user
+        return self.create_user(id_code, email, mobile, password, **kwargs)
 
 
-    def create_superuser(self, id_code, email, password=None, **kwargs):
+
+    def create_superuser(self, id_code, email,mobile, password=None, **kwargs):
         kwargs.setdefault("is_staff", True)
         kwargs.setdefault("is_superuser", True)
         kwargs.setdefault("is_active", True)
-
+        
+        if password is None:
+            raise ValueError("Superuser must have a password.")
+        
         if kwargs.get("is_staff") is not True:
             raise ValueError("Superuser must have is_staff=True.")
 
         if kwargs.get("is_superuser") is not True:
             raise ValueError("Superuser must have is_superuser=True.")
 
-        return self.create_user(id_code, email, password, **kwargs)
+        return self.create_user(id_code, email,mobile, password, **kwargs)
 
 
 
@@ -68,7 +75,6 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
     id_code = models.CharField(max_length=10,unique=True,validators=[validate_id_code],default=random_id_code)
     mobile = models.CharField( max_length=11,unique=True,validators=[validate_mobile],default=random_mobile)
     email = models.EmailField(unique=True)
-    avatar = models.ImageField(upload_to="avatars/",null=True,blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -77,7 +83,7 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
     # automatically generates a short unique identifier
     # prevents editing from admin or forms
     USERNAME_FIELD = "id_code"
-    REQUIRED_FIELDS = ["email"]
+    REQUIRED_FIELDS = ["email", "mobile"]
 
     objects = CustomManager()
 
@@ -86,14 +92,19 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(UserModel, on_delete=models.CASCADE)
+    user = models.OneToOneField(UserModel, on_delete=models.CASCADE,related_name="profile")
     first_name = models.CharField(max_length=250)
     last_name = models.CharField(max_length=250)
     description = models.TextField(blank=True)
     avatar = models.ImageField(upload_to="profile/",null=True,blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name = "Profile"
+        verbose_name_plural = "Profiles"
+
 
     def __str__(self):
-        return self.user.email
+        return f"{self.user.id_code} - {self.first_name} {self.last_name}"
 
