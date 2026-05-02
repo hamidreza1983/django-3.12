@@ -1,5 +1,5 @@
 from django.db import models
-
+import uuid
 # Create your models here.
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
@@ -20,6 +20,7 @@ class CustomeManager(BaseUserManager):
         user.save()
         return user
     
+
     def create_superuser(self, email, password, **kwargs):
         kwargs.setdefault("is_staff", True)
         kwargs.setdefault("is_superuser", True)
@@ -49,16 +50,27 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+    
+
+def validate_phone(value):
+    if not value.isdigit() or len(value) != 11:
+        raise ValueError('The phone number must be 11 digits long and numeric.')
+
+def validate_codmeli(value):
+    if not value.isdigit() or len(value) != 10:
+        raise ValueError('The codmeli number must be 11 digits long and numeric.')
 
 
-#def validate_mobile(phone:str):
-#    if len(phone) != 11:
-#        raise ValueError ("phone must be 11 char")
 
-#import uuid#
+def phon_uuid():
+    return str(uuid.uuid4())[:11]
 
-#class UserProfile(models.Model):
-#    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
-#    phone = models.CharField(max_length=11, unique=True, default=uuid.UUID)
-#    id_code = models.CharField(max_length=10, unique=True, default=uuid.UUID)
-#    image = models.ImageField(upload_to="profile/", null=True, blank=True)
+def codmeli_uuid():
+    return str(uuid.uuid4())[:10]
+
+
+class UserProfile(models.Model):
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    phone = models.CharField(max_length=11, unique=True,validators=[validate_phone], default=phon_uuid)
+    id_code = models.CharField(max_length=10, unique=True,validators=[validate_codmeli], default=codmeli_uuid)
+    image = models.ImageField(upload_to="profile/", null=True, blank=True)
