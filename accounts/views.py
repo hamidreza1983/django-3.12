@@ -8,36 +8,74 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import password_validation
 from django.core.mail import send_mail
 from rest_framework.authtoken.models import Token
+from django.views.generic import FormView
 # Create your views here.
 
 
-def login_view(request):
-    if request.method == "GET":
-        return render(request, "accounts/login.html")
-    else:
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data.get("email")
-            password = form.cleaned_data.get("password")
-            try:
-                user = UserModel.objects.get(email=email)
-            except:
-                messages.error(request, "user not found")
-                return redirect("accounts:login")
+class LoginView(FormView):
+    form_class = LoginForm
+    template_name = "accounts/login.html"
+    success_url = "/"
 
-            email = user.email
-            user = authenticate(request, username=email, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect("root:home")
-            else:
-                messages.error(request, "Invalid username or password")
-                return redirect("accounts:login")
-        else:
-            messages.error(request, "Invalid form data")
+    def form_valid(self, form):
+        email = self.request.POST.get("email")
+        password = self.request.POST.get("password")
+        print (email, password)
+        try:
+            user = UserModel.objects.get(email=email)
+        except:
+            messages.error(self.request, "user not found")
             return redirect("accounts:login")
 
+        email = user.email
+        user = authenticate(self.request, username=email, password=password)
+        if user is not None:
+            login(self.request, user)
+            return super().form_valid(form)
+        else:
+            messages.error(self.request, "user data is not correct")
+            return redirect("accounts:login")
+
+        
+    def form_invalid(self, form):
+        messages.error(self.request, "Invalid form data")
+        return super().form_invalid(form)
+
+    
+
+
+
+
+
+#def login_view(request):
+#    if request.method == "GET":
+#        return render(request, "accounts/login.html")
+#    else:
+#        form = LoginForm(request.POST)
+#        if form.is_valid():
+#            email = form.cleaned_data.get("email")
+#            password = form.cleaned_data.get("password")
+#            try:
+#                user = UserModel.objects.get(email=email)
+#            except:
+#                messages.error(request, "user not found")
+#                return redirect("accounts:login")#
+
+#            email = user.email
+#            user = authenticate(request, username=email, password=password)
+#            if user is not None:
+#                login(request, user)
+#                return redirect("root:home")
+#            else:
+#                messages.error(request, "Invalid username or password")
+#                return redirect("accounts:login")
+#        else:
+#            messages.error(request, "Invalid form data")
+#            return redirect("accounts:login")
+
 #from .models import UserProfile   
+
+
 
 def register_view(request):
     if request.method == "GET":

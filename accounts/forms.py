@@ -3,7 +3,7 @@ from .models import UserModel
 from django.contrib.auth.forms import UserCreationForm
 
 class LoginForm(forms.Form):
-    phone = forms.CharField(max_length=12)
+    email = forms.EmailField()
     password = forms.CharField(max_length=100)
 
 class RegisterForm(UserCreationForm):

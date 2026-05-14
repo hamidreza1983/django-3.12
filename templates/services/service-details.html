@@ -39,6 +39,7 @@
             <div class="service-box">
               <h4>Serices Category</h4>
               <div class="services-list">
+                {{ user.email }}
                 {% for cat in service.category.all %}
                 <a href="#" class="active"><i class="bi bi-arrow-right-circle"></i><span>{{cat.name}}</span></a>
                 {% endfor %}
