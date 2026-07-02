@@ -140,3 +140,11 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
 AUTH_USER_MODEL = "accounts.UserModel"
+
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+   'rest_framework.permissions.AllowAny',
+]
+}
