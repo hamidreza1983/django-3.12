@@ -19,7 +19,7 @@ from rest_framework.viewsets import ModelViewSet
 
 class SerivcesView(ModelViewSet):
     serializer_class = ServicesSerializers
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     queryset = Services.objects.filter(status=True)
 
 
