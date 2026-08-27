@@ -1,7 +1,6 @@
 from django.urls import path
 from .views import *
 
-
 app_name = "accounts"
 
 urlpatterns = [
@@ -14,4 +13,3 @@ urlpatterns = [
     path("reset-password-confirm/<str:token>", reset_password_confirm, name="reset-password-confirm"),
     path("reset-password-complete/", reset_password_complete, name="reset-password-complete"),
 ]
-    

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Skills, Agent , Star, Testimonial, ContactUs
+from .models import Skills, Agent, Star, Testimonial, ContactUs
 from services.models import Services
 from .forms import ContactUsForm
 from django.contrib import messages
@@ -8,14 +8,15 @@ from django.views.generic import TemplateView, RedirectView
 
 def home(request):
     services = Services.objects.filter(status=True)[:6]
-    agents = Agent.objects.filter(status=True).order_by('-created_at')[:3]
+    agents = Agent.objects.filter(status=True).order_by("-created_at")[:3]
     testinonials = Testimonial.objects.filter(status=True)
     context = {
         "agents": agents,
         "testimonials": testinonials,
-        "services" : services,
+        "services": services,
     }
     return render(request, "root/index.html", context=context)
+
 
 def contact(request):
     if request.method == "GET":
@@ -30,7 +31,6 @@ def contact(request):
             messages.error(request, "invalid input data")
             return redirect(request.path_info)
 
-
         #    name = form.cleaned_data['name']
         #    email = form.cleaned_data['email']
         #    subject = form.cleaned_data['subject']
@@ -41,50 +41,53 @@ def contact(request):
         #        "message" : "form saved successfully"
         #    }
         #    return render(request, "root/contact.html", context=context)  .
-        #else:
+        # else:
         #    context = {
         #        "message" : "invalid input data"
         #    }
-        #    return render(request, "root/contact.html", context=context) 
+        #    return render(request, "root/contact.html", context=context)
 
-
-        #name = request.POST.get("name")
-        #if len(name) >= 100 :
+        # name = request.POST.get("name")
+        # if len(name) >= 100 :
         #    return render(request, "root/contact.html")
-        #email = request.POST.get("email")
-        #if "@" not in email or "." not in email:
+        # email = request.POST.get("email")
+        # if "@" not in email or "." not in email:
         #    return render(request, "root/contact.html")
-        #subject = request.POST.get("subject")    
-        #message = request.POST.get("message")
-        #contact = ContactUs()
-        #contact.name = name
-        #contact.email = email
-        #contact.subject = subject
-        #contact.message = message
-        #contact.save()
-        #return render(request, "root/contact.html")
+        # subject = request.POST.get("subject")
+        # message = request.POST.get("message")
+        # contact = ContactUs()
+        # contact.name = name
+        # contact.email = email
+        # contact.subject = subject
+        # contact.message = message
+        # contact.save()
+        # return render(request, "root/contact.html")
 
-#def about(request):
+
+# def about(request):
 #    return render(request, "root/about.html")
+
 
 class AboutView(TemplateView):
     template_name = "root/about.html"
+
 
 #    def get_context_data(self, **kwargs):
 #        context = super().get_context_data(**kwargs)
 #        #skills = Skills.objects.filter(status=True)
 #        #stars = Star.objects.filter(status=True)
-#        context["test"] = 1000   
+#        context["test"] = 1000
 #        return context#
+
 
 class Soft98(RedirectView):
     url = "https://www.soft98.ir"
 
+
 def agent(request):
     agents = Agent.objects.filter(status=True)
-    context = {
-        "agents": agents
-    }
+    context = {"agents": agents}
     return render(request, "root/agents.html", context=context)
+
 
 # Create your views here.

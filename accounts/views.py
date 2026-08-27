@@ -9,6 +9,7 @@ from django.contrib.auth import password_validation
 from django.core.mail import send_mail
 from rest_framework.authtoken.models import Token
 from django.views.generic import FormView
+
 # Create your views here.
 
 
@@ -20,7 +21,7 @@ class LoginView(FormView):
     def form_valid(self, form):
         email = self.request.POST.get("email")
         password = self.request.POST.get("password")
-        print (email, password)
+        print(email, password)
         try:
             user = UserModel.objects.get(email=email)
         except:
@@ -36,18 +37,12 @@ class LoginView(FormView):
             messages.error(self.request, "user data is not correct")
             return redirect("accounts:login")
 
-        
     def form_invalid(self, form):
         messages.error(self.request, "Invalid form data")
         return super().form_invalid(form)
 
-    
 
-
-
-
-
-#def login_view(request):
+# def login_view(request):
 #    if request.method == "GET":
 #        return render(request, "accounts/login.html")
 #    else:
@@ -73,25 +68,24 @@ class LoginView(FormView):
 #            messages.error(request, "Invalid form data")
 #            return redirect("accounts:login")
 
-#from .models import UserProfile   
-
+# from .models import UserProfile
 
 
 def register_view(request):
     if request.method == "GET":
-        return render(request, "accounts/register.html") 
+        return render(request, "accounts/register.html")
     else:
         form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            #user = form.save()
-            #profile = UserProfile.objects.create(user=user)
-            #profile.save()
+            # user = form.save()
+            # profile = UserProfile.objects.create(user=user)
+            # profile.save()
             messages.success(request, "Registration successful. Please log in.")
             return redirect("accounts:login")
         else:
             messages.error(request, "input data is not valid")
-            redirect (request.path_info)
+            redirect(request.path_info)
 
 
 @login_required
@@ -103,14 +97,14 @@ def logout_view(request):
 @login_required
 def change_password_view(request):
     if request.method == "GET":
-        return render(request, "accounts/change_pass.html") 
+        return render(request, "accounts/change_pass.html")
     else:
         form = ChangePasswordForm(request.POST)
         if form.is_valid():
             new_pass1 = form.cleaned_data["new_pass1"]
             new_pass2 = form.cleaned_data["new_pass2"]
             if (new_pass1 == new_pass2) and not (request.user.check_password(new_pass1)):
-                try :
+                try:
                     password_validation.validate_password(new_pass1)
                     user = request.user
                     user.set_password(new_pass1)
@@ -122,17 +116,18 @@ def change_password_view(request):
                     messages.add_message(request, messages.ERROR, "validate password not verified")
                     return redirect(request.path_info)
             else:
-                messages.add_message(request, messages.ERROR, "pass1 and 2 must be same or new pass could not be as old pass")
+                messages.add_message(
+                    request, messages.ERROR, "pass1 and 2 must be same or new pass could not be as old pass"
+                )
                 return redirect(request.path_info)
         else:
             messages.add_message(request, messages.ERROR, "input data is not valid")
             return redirect(request.path_info)
 
-                
 
 def reset_password(request):
     if request.method == "GET":
-        return render(request, "accounts/reset_password.html") 
+        return render(request, "accounts/reset_password.html")
     else:
         form = ResetPasswordForm(request.POST)
         if form.is_valid():
@@ -144,23 +139,18 @@ def reset_password(request):
                 f"http://127.0.0.1:8000/accounts/reset-password-confirm/{token.key}",
                 "admin@site.test",
                 [user.email],
-                fail_silently=True
+                fail_silently=True,
             )
             return redirect("accounts:reset-password-done")
 
 
-
-    
-
-
-
 def reset_password_done(request):
-    return render(request, "accounts/reset_password_done.html") 
+    return render(request, "accounts/reset_password_done.html")
 
 
 def reset_password_confirm(request, token):
     if request.method == "GET":
-        return render(request, "accounts/reset_password_confirm.html") 
+        return render(request, "accounts/reset_password_confirm.html")
     else:
         form = ChangePasswordForm(request.POST)
         if form.is_valid():
@@ -168,7 +158,7 @@ def reset_password_confirm(request, token):
             new_pass2 = form.cleaned_data["new_pass2"]
             user = Token.objects.get(key=token).user
             if (new_pass1 == new_pass2) and not (user.check_password(new_pass1)):
-                try :
+                try:
                     password_validation.validate_password(new_pass1)
                     user.set_password(new_pass1)
                     user.save()
@@ -177,7 +167,9 @@ def reset_password_confirm(request, token):
                     messages.add_message(request, messages.ERROR, "validate password not verified")
                     return redirect(request.path_info)
             else:
-                messages.add_message(request, messages.ERROR, "pass1 and 2 must be same or new pass could not be as old pass")
+                messages.add_message(
+                    request, messages.ERROR, "pass1 and 2 must be same or new pass could not be as old pass"
+                )
                 return redirect(request.path_info)
         else:
             messages.add_message(request, messages.ERROR, "input data is not valid")
@@ -185,4 +177,4 @@ def reset_password_confirm(request, token):
 
 
 def reset_password_complete(request):
-    return render(request, "accounts/reset-password-complete.html") 
+    return render(request, "accounts/reset-password-complete.html")

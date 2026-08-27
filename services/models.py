@@ -9,21 +9,24 @@ class Tags(models.Model):
     def __str__(self):
         return str(self.title)
 
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
         return str(self.name)
 
+
 class Specials(models.Model):
     text = models.CharField(max_length=200)
 
     def __str__(self):
         return str(self.text)
-    
+
+
 class Services(models.Model):
     name = models.CharField(max_length=100)
-    photo = models.ImageField(upload_to='services/', default='services/default.png')
+    photo = models.ImageField(upload_to="services/", default="services/default.png")
     category = models.ManyToManyField(Category)
     title = models.CharField(max_length=250)
     tags = models.ManyToManyField(Tags)
@@ -37,6 +40,6 @@ class Services(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     class Meta:
-        ordering = ['-created_at']
+        ordering = ["-created_at"]

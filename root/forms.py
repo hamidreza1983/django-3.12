@@ -2,7 +2,6 @@ from django import forms
 from .models import ContactUs
 
 
-
 class ContactForm(forms.Form):
     name = forms.CharField(max_length=100)
     email = forms.EmailField()
@@ -13,4 +12,4 @@ class ContactForm(forms.Form):
 class ContactUsForm(forms.ModelForm):
     class Meta:
         model = ContactUs
-        fields = ['name', 'email', 'subject', 'message']
+        fields = ["name", "email", "subject", "message"]

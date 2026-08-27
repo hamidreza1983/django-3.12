@@ -7,50 +7,49 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("name", models.CharField(max_length=100)),
             ],
         ),
         migrations.CreateModel(
-            name='Specials',
+            name="Specials",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('text', models.CharField(max_length=200)),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("text", models.CharField(max_length=200)),
             ],
         ),
         migrations.CreateModel(
-            name='Tags',
+            name="Tags",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=100)),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("title", models.CharField(max_length=100)),
             ],
         ),
         migrations.CreateModel(
-            name='Services',
+            name="Services",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('photo', models.ImageField(default='services/default.png', upload_to='services/')),
-                ('title', models.CharField(max_length=250)),
-                ('short_content', models.TextField()),
-                ('long_content', models.TextField()),
-                ('catalog_link', models.URLField(blank=True, null=True)),
-                ('status', models.BooleanField(default=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('category', models.ManyToManyField(to='services.category')),
-                ('speacials', models.ManyToManyField(to='services.specials')),
-                ('tags', models.ManyToManyField(to='services.tags')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("name", models.CharField(max_length=100)),
+                ("photo", models.ImageField(default="services/default.png", upload_to="services/")),
+                ("title", models.CharField(max_length=250)),
+                ("short_content", models.TextField()),
+                ("long_content", models.TextField()),
+                ("catalog_link", models.URLField(blank=True, null=True)),
+                ("status", models.BooleanField(default=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("category", models.ManyToManyField(to="services.category")),
+                ("speacials", models.ManyToManyField(to="services.specials")),
+                ("tags", models.ManyToManyField(to="services.tags")),
             ],
             options={
-                'ordering': ['-created_at'],
+                "ordering": ["-created_at"],
             },
         ),
     ]
