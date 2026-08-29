@@ -37,7 +37,8 @@ class CustomeManager(BaseUserManager):
         
 class UserModel(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
-    #id_code = models.CharField(max_length=10, blank=True, null=True)
+    id_code = models.CharField(max_length=10, blank=True)
+    phone = models.CharField(max_length=11, unique=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
@@ -55,10 +56,11 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
 #    if len(phone) != 11:
 #        raise ValueError ("phone must be 11 char")
 
-#import uuid#
+import uuid
 
-#class UserProfile(models.Model):
-#    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
-#    phone = models.CharField(max_length=11, unique=True, default=uuid.UUID)
-#    id_code = models.CharField(max_length=10, unique=True, default=uuid.UUID)
-#    image = models.ImageField(upload_to="profile/", null=True, blank=True)
+class UserProfile(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.OneToOneField(UserModel, on_delete=models.CASCADE, related_name='user_profile') 
+    phone = models.CharField(max_length=11, unique=True, blank=True) 
+    id_code = models.CharField(max_length=10, unique=True, blank=True) 
+    image = models.ImageField(upload_to="profile/", null=True, blank=True)
