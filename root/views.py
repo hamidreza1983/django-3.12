@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Skills, Agent, Star, Testimonial, ContactUs
+from .models import  Agent, Testimonial
 from services.models import Services
 from .forms import ContactUsForm
 from django.contrib import messages
