@@ -52,3 +52,5 @@ class TestResponseAccounts(TestCase):
         url = reverse("accounts:login")
         response = self.c.get(url)
         self.assertTemplateUsed(response, template_name="accounts/login.html")
+
+#end test
