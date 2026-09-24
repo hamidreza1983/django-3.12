@@ -6,3 +6,4 @@ flake8
 pillow
 requests
 pytest-django
+Faker
