@@ -10,3 +10,4 @@ urlpatterns = [
     path("agents/", agent, name="agent"),
     path("soft98/", Soft98.as_view(), name="soft98"),
 ]
+
