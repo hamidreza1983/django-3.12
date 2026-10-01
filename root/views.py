@@ -4,8 +4,11 @@ from services.models import Services
 from .forms import ContactUsForm
 from django.contrib import messages
 from django.views.generic import TemplateView, RedirectView
+from django.core.cache import cache
+from django.views.decorators.cache import cache_page
 
 
+@cache_page(600)
 def home(request):
     services = Services.objects.filter(status=True)[:6]
     agents = Agent.objects.filter(status=True).order_by("-created_at")[:3]
@@ -20,7 +23,16 @@ def home(request):
 
 def contact(request):
     if request.method == "GET":
-        return render(request, "root/contact.html")
+
+        if cache.get("name") is not None:
+            name = cache.get("name")
+        else:
+            cache.set("name", "hamid eza", 600)
+            name = cache.get("name")
+        context = {
+            "names" : name
+        }
+        return render(request, "root/contact.html", context=context)
     elif request.method == "POST":
         form = ContactUsForm(request.POST)
         if form.is_valid():
@@ -70,6 +82,8 @@ def contact(request):
 
 class AboutView(TemplateView):
     template_name = "root/about.html"
+
+
 
 
 #    def get_context_data(self, **kwargs):
