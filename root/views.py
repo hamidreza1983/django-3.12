@@ -6,13 +6,20 @@ from django.contrib import messages
 from django.views.generic import TemplateView, RedirectView
 from django.core.cache import cache
 from django.views.decorators.cache import cache_page
+from .tasks import send_email
+import time
+
+def test_mail():
+    time.sleep(10)
+    print ("email send successfully .... ")
 
 
-@cache_page(600)
 def home(request):
     services = Services.objects.filter(status=True)[:6]
     agents = Agent.objects.filter(status=True).order_by("-created_at")[:3]
     testinonials = Testimonial.objects.filter(status=True)
+    #test_mail()
+    send_email.delay()
     context = {
         "agents": agents,
         "testimonials": testinonials,
